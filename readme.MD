@@ -13,4 +13,4 @@ pip install wtforms
 
 1. Clone
 2. Install VENV 
-   
+3. Import tester DB 

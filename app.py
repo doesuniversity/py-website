@@ -6,8 +6,8 @@ app =Flask(__name__)
 
 # Config MySQL
 app.config['MYSQL_HOST'] = 'localhost'
-app.config['MYSQL_USER'] = 'does'
-app.config['MYSQL_PASSWORD'] = '1'
+app.config['MYSQL_USER'] = 'python'
+app.config['MYSQL_PASSWORD'] = 'password'
 app.config['MYSQL_DB'] = 'flaskapp'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
@@ -18,13 +18,20 @@ mysql = MySQL(app)
 # Index
 @app.route('/')
 def index():
-	return render_template('home.html')
+	return render_template('pages/home.html')
 
 # Students
 @app.route('/students')
 def students():
 	# Create cursor
+	if mysql:
+		pass
 	cur = mysql.connection.cursor()
+
+	# if cur:
+	# 	return "mysql ada"
+	# else:
+	# 	return "mysql gak ada"
 
 	# Get students
 	result = cur.execute("SELECT * FROM students")
@@ -32,10 +39,10 @@ def students():
 	students = cur.fetchall()
 
 	if result > 0:
-		return render_template('dashboard.html', students=students)
+		return render_template('/pages/students.html', students=students)
 	else:
 		msg = 'No Data Found'
-		return render_template('dashboard.html', msg=msg)
+		return render_template('/pages/students.html', msg=msg)
 	# Close connection
 	cur.close()
 
@@ -72,7 +79,7 @@ def add_student():
 
 		return redirect(url_for('students'))
 
-	return render_template('register_student.html', form=form)
+	return render_template('pages/registration.html', form=form)
 
 # Edit Student
 @app.route('/edit_student/<string:id>', methods=['GET', 'POST'])
@@ -119,7 +126,7 @@ def edit_article(id):
 
 		return redirect(url_for('students'))
 
-	return render_template('edit_student.html', form=form)
+	return render_template('pages.student_edit.html', form=form)
 
 # Delete Student
 @app.route('/delete_student/<string:id>', methods=['POST'])
